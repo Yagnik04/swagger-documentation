@@ -1,0 +1,223 @@
+swagger: "2.0"
+info:
+  description: "This is a documentation for Admin Service"
+  version: "1.0.0"
+  title: "Admin Service"
+  termsOfService: "http://youtube.com/c/braintemorg"
+  contact:
+    email: "yagnik.bhatt@idexcel.net"
+  license:
+    name: "Apache 2.0"
+    url: "http://www.apache.org/licenses/LICENSE-2.0.html"
+host: "localhost:8080"
+basePath: "/api"
+schemes:
+- "http"
+paths:
+  /lenders:
+    get:
+      tags:
+      - "lenders"
+      summary: "get the list of all lenders."
+      description: "This endpoint uses a get request to retrieve all lenders"
+      produces:
+      - "application/json"
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/lenders"
+    post:
+      tags:
+      - "lenders"
+      summary: "get the list of all lenders."
+      description: "This endpoint uses a get request to retrieve all lenders"
+      consumes:
+      - "application/json"
+      parameters:
+      - name: "body"
+        in: "body"
+        description: "conttains name and address"
+        required: true
+        schema:
+          $ref: "#/definitions/postbody"
+      responses:
+        201:
+          description: "Successfully created"
+          schema:
+            $ref: "#/definitions/successurl"
+        409:
+          description: "CONFLICT"
+        400:
+          description: "name and address missing"
+              
+  /lenders/{lenderId}: 
+    get:
+      tags:
+      - "lenders"
+      summary: "get a particular lender by id"
+      description: "This endpoint displays a lender's details"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "lenderId"
+        in: "path"
+        description: "this is a unique identifier"
+        required: true
+        type: "integer"
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+              $ref: "#/definitions/lenders"
+        404:
+          description: "Not Found"
+    put:
+      tags:
+      - "lenders"
+      summary: "get a particular lender by id"
+      description: "This endpoint displays a lender's details"
+      produces:
+      - "application/json"
+      consumes:
+      - "application/json"
+      parameters:
+      - name: "lenderId"
+        in: "path"
+        description: "this is a unique identifier"
+        required: true
+        type: "integer"
+      - name: "body"
+        in: "body"
+        description: "lenders updated content"
+        schema:
+          $ref: "#/definitions/lenders"
+      responses:
+        204:
+          description: "Not Content"
+        404:
+          description: "Not Found"
+    delete:
+      tags:
+      - "lenders"
+      summary: "delete a lender by id"
+      description: "This endpoint deletes a lender from system"
+      parameters:
+      - name: "lenderId"
+        in: "path"
+        description: "this is a unique identifier"
+        required: true
+        type: "integer"
+      responses:
+        204:
+          description: "Not Content"
+        404:
+          description: "Not Found" 
+    head:
+      tags:
+      - "lenders"
+      summary: "Check the lender by Id"
+      description: "This endpoint checks for a lender by Id"
+      parameters:
+      - name: "lenderId"
+        in: "path"
+        description: "this is a unique identifier"
+        required: true
+        type: "integer"
+      responses:
+        200:
+          description: "OK"
+        404:
+          description: "Not Found"  
+  /lenders/{lenderId}/status:
+    patch:
+      tags:
+      - "lenders"
+      summary: "send the status"
+      description: "This endpoint sends the status"
+      parameters:
+      - name: "lenderId"
+        in: "path"
+        description: "this is a unique identifier"
+        required: true
+        type: "integer"
+      - name: "status"
+        in: "path"
+        description: "this is status to be passed"
+        required: true
+        type: "string"
+      - name: "body"
+        in: "body"
+        description: "send status in body"
+        schema:
+          $ref: "#/definitions/status"
+      responses:
+        204:
+          description: "No Content"
+        404:
+          description: "Not Found"
+  
+definitions:
+  lenders:
+    type: "object"
+    properties:
+      id:
+        type: "integer"
+        format: "int64"
+      name:
+        type: "string"
+      address:
+        $ref: "#/definitions/address"
+      status:
+        type: "string"
+        enum:
+        - "Active"
+        - "Closed"
+      createdBy:
+        type: "string"
+      createdDate:
+        type: "string"
+        format: "date-time"
+      updatedBy:
+        type: "string"
+      updatedDate:
+        type: "string"
+        format: "date-time"  
+  address:
+    type: "object"
+    properties:
+          street:
+            type: "string"
+          city:
+            type: "string"
+          state:
+            type: "string"
+          zipcode:
+            type: "string"
+          country:
+            type: "string"
+  status:
+    type: "object"
+    properties:
+      id:
+        type: "integer"
+      status:
+        type: "string"
+  successurl:
+    type: "string"
+    description: "http://localhost:8080/lenderd/{id}"
+    
+  postbody:
+    type: "object"
+    properties:
+      name:
+        type: "string"
+      address:
+        type: "string"
+    
+    
+    
+    
+    
